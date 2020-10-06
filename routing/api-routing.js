@@ -36,22 +36,20 @@ module.exports = function (app) {
   ////////////////// ADD NOTE
   // When user submits form data to server this will push the object JSON to our "database" file
   app.post("/api/notes", function (req, res) {
-    console.log("req.body", req.body);
-
-    let notesList = [];
+    // console.log("req.body", req.body);
     const newNote = req.body;
     newNote.id = globalID;
     globalID++;
-    console.log("globalID", globalID);
-    console.log("newNote", newNote);
+    // console.log("globalID", globalID);
+    // console.log("newNote", newNote);
 
     fs.readFile(DBPath, (err, data) => {
       //error handling
       if (err) throw err;
       let notesList = JSON.parse(data);
-      console.log(JSON.parse(data));
+      // console.log(JSON.parse(data));
       notesList.push(newNote);
-      console.log("notesList", notesList);
+      // console.log("notesList", notesList);
 
       //Re-write the db.json file with updated notes new array
       fs.writeFile(DBPath, JSON.stringify(notesList), "utf8", (err) => {
@@ -63,12 +61,35 @@ module.exports = function (app) {
       });
     });
   });
-
   ///////////////DELETE NOTE
   app.delete("/api/notes/:id", function (req, res) {
-    // req.body is available since we're using the body parsing middleware
-    notesJSONDB.push(req.body);
-    res.json(true); //TODO: not sure if this line is needed, vestige from hot restaurant
+    var IDToDelete = parseInt(req.params.id);
+
+    console.log("Attempting to delete note# " + IDToDelete + "...");
+    //FIXME: there has to be a better way than this loop!
+    fs.readFile(DBPath, (err, data) => {
+      if (err) throw err;
+      let newNotesArray = JSON.parse(data);
+      console.log("newNotesArray", newNotesArray);
+      //look for an object with matching ID property to submitted id
+      for (let i = 0; i < newNotesArray.length; i++) {
+        console.log(newNotesArray[i].id);
+        if (parseInt(newNotesArray[i].id) === IDToDelete) {
+          console.log("newNotesArray[i]", newNotesArray[i]);
+          console.log("deleting note# " + IDToDelete);
+          newNotesArray.splice(i, 1);
+        }
+      }
+
+      fs.writeFile(DBPath, JSON.stringify(newNotesArray), "utf8", (err) => {
+        //1-liner error handling
+        if (err) throw err;
+
+        //telling the program that the function is over
+        res.end();
+      });
+    });
+    //TODO: Do I need `res.end();` here as a redundancy in case it fails? or will the throw error take care of that?
   });
 };
 // ---------------------------------------------------------------------------
@@ -85,9 +106,9 @@ module.exports = function (app) {
 
 //TODO: Am I going to have a synchronicity issue here?
 // TODO: Should I use promises instead? How would I put this in the route, then use a .then or something?
-function readNotesDB() {
-  fs.readFile(DBPath, (err, data) => {
-    if (err) throw err;
-    return res.json(JSON.parse(data));
-  });
-}
+// function readNotesDB() {
+//   fs.readFile(DBPath, (err, data) => {
+//     if (err) throw err;
+//     return res.json(JSON.parse(data));
+//   });
+// }

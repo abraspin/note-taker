@@ -1,4 +1,4 @@
-const { Console } = require("console"); //FIXME: WTF IS THIS
+// const { Console } = require("console"); //FIXME: WTF IS THIS
 // ===============================================================================
 // LOAD DATA
 // We are linking our routes to a series of "data" sources.
@@ -15,6 +15,12 @@ const DBPath = path.join(__dirname, "../db/db.json");
 // ROUTING
 // ===============================================================================
 
+//TODO: Do I want a new DB whenever the server restarts?
+// fs.writeFile(DBPath, "[]", "utf8", (err) => {
+//   if (err) throw err;
+//   res.end();
+// });
+
 module.exports = function (app) {
   // API GET Requests
   // Below code handles when users "visit" a page.
@@ -28,7 +34,7 @@ module.exports = function (app) {
     fs.readFile(DBPath, (err, data) => {
       if (err) throw err;
       //return the parsed information in the notes "DB" and displays on screen
-      console.log(JSON.parse(data));
+      // console.log(JSON.parse(data));
       return res.json(JSON.parse(data));
     });
   });
@@ -57,7 +63,8 @@ module.exports = function (app) {
         if (err) throw err;
 
         //telling the program that the function is over
-        res.end();
+        // res.end();
+        res.json(newNote);
       });
     });
   });
@@ -65,18 +72,18 @@ module.exports = function (app) {
   app.delete("/api/notes/:id", function (req, res) {
     var IDToDelete = parseInt(req.params.id);
 
-    console.log("Attempting to delete note# " + IDToDelete + "...");
-    //FIXME: there has to be a better way than this loop!
+    // console.log("Attempting to delete note# " + IDToDelete + "...");
     fs.readFile(DBPath, (err, data) => {
       if (err) throw err;
       let newNotesArray = JSON.parse(data);
-      console.log("newNotesArray", newNotesArray);
+      // console.log("newNotesArray", newNotesArray);
       //look for an object with matching ID property to submitted id
+      //FIXME: there has to be a better way than this loop!
       for (let i = 0; i < newNotesArray.length; i++) {
-        console.log(newNotesArray[i].id);
+        // console.log(newNotesArray[i].id);
         if (parseInt(newNotesArray[i].id) === IDToDelete) {
-          console.log("newNotesArray[i]", newNotesArray[i]);
-          console.log("deleting note# " + IDToDelete);
+          // console.log("newNotesArray[i]", newNotesArray[i]);
+          // console.log("deleting note# " + IDToDelete);
           newNotesArray.splice(i, 1);
         }
       }

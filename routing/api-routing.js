@@ -1,4 +1,4 @@
-const { Console } = require("console");
+const { Console } = require("console"); //FIXME: WTF IS THIS
 // ===============================================================================
 // LOAD DATA
 // We are linking our routes to a series of "data" sources.
@@ -36,20 +36,25 @@ module.exports = function (app) {
   ////////////////// ADD NOTE
   // When user submits form data to server this will push the object JSON to our "database" file
   app.post("/api/notes", function (req, res) {
-    // let notesList = [];
+    console.log("req.body", req.body);
+
+    let notesList = [];
     const newNote = req.body;
     newNote.id = globalID;
     globalID++;
-    fs.readFile(__dirname + "/../db/db.json", (err, data) => {
+    console.log("globalID", globalID);
+    console.log("newNote", newNote);
+
+    fs.readFile(DBPath, (err, data) => {
       //error handling
       if (err) throw err;
       let notesList = JSON.parse(data);
-      notesList.id = id;
-      id++;
+      console.log(JSON.parse(data));
       notesList.push(newNote);
+      console.log("notesList", notesList);
 
       //Re-write the db.json file with updated notes new array
-      fs.writeFile(__dirname + "/../db/db.json", JSON.stringify(notesList), "utf8", (err) => {
+      fs.writeFile(DBPath, JSON.stringify(notesList), "utf8", (err) => {
         //1-liner error handling
         if (err) throw err;
 

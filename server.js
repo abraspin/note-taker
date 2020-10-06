@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 3001;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 //TODO: is this necessary?
-// app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/public"));
 
 //Point the server to route files
 //(Immediately Invoked Function Expression)

@@ -1,11 +1,6 @@
 // npm required module
 const express = require("express");
 
-// ==============================================================================
-// EXPRESS CONFIGURATION
-// This sets up the basic properties for our express server
-// ==============================================================================
-
 // Create an express server with Node
 const app = express();
 

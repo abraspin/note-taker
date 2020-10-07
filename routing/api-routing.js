@@ -1,23 +1,18 @@
 // const { Console } = require("console"); //FIXME:
-
+// Dependencies
 const fs = require("fs");
 const path = require("path");
-// This global variable uniquely identifies each note //TODO: change back to "1" after testing
-let globalID = 2;
+
+// This global variable uniquely identifies each note
+let globalID = 1;
 //path to local DB (JSON Object array)
 const DBPath = path.join(__dirname, "../db/db.json");
 
 // ROUTING
 module.exports = function (app) {
-  // API GET Requests
-  // Below code handles when users "visit" a page.
-  // In each of the below cases when a user visits a link
-  // (ex: localhost:PORT/api/admin... they are shown a JSON of the data in the table)
-  // ---------------------------------------------------------------------------
-
   ////////////GET ALL NOTES
   app.get("/api/notes", (req, res) => {
-    //read the db.json file containing all saved notes (local path joins path to "DB"
+    //read the db.json file containing all saved notes (local path joins path to "DB")
     fs.readFile(DBPath, (err, data) => {
       if (err) throw err;
       //return the parsed information in the notes "DB" and displays on screen
@@ -63,14 +58,11 @@ module.exports = function (app) {
     fs.readFile(DBPath, (err, data) => {
       if (err) throw err;
       let newNotesArray = JSON.parse(data);
-      // console.log("newNotesArray", newNotesArray);
+
       //look for an object with matching ID property to submitted id
       //FIXME: there has to be a better way than this loop!
       for (let i = 0; i < newNotesArray.length; i++) {
-        // console.log(newNotesArray[i].id);
         if (parseInt(newNotesArray[i].id) === IDToDelete) {
-          // console.log("newNotesArray[i]", newNotesArray[i]);
-          // console.log("deleting note# " + IDToDelete);
           newNotesArray.splice(i, 1);
         }
       }

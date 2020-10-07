@@ -5,7 +5,7 @@ const express = require("express");
 const app = express();
 
 //Set local port, or deployed environment port (Heroku)
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 8080;
 
 // Parse incoming data with middleware
 app.use(express.urlencoded({ extended: true }));

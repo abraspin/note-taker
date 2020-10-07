@@ -4,12 +4,15 @@ const fs = require("fs");
 const path = require("path");
 
 // This global variable uniquely identifies each note
-let globalID = 1;
+// let globalID = 1; //FIXME:
 //path to local DB (JSON Object array)
 const DBPath = path.join(__dirname, "../db/db.json");
 
+//create local array variable
+
 // ROUTING
 module.exports = function (app) {
+  //assign variables to local array
   ////////////GET ALL NOTES
   app.get("/api/notes", (req, res) => {
     //read the db.json file containing all saved notes (local path joins path to "DB")
@@ -26,8 +29,9 @@ module.exports = function (app) {
   app.post("/api/notes", function (req, res) {
     // console.log("req.body", req.body);
     const newNote = req.body;
-    newNote.id = globalID;
-    globalID++;
+    newNote.id = Math.floor(Math.random() * 100000000);
+
+    ////TODO: math.random * length of array
     // console.log("globalID", globalID);
     // console.log("newNote", newNote);
 
@@ -50,6 +54,7 @@ module.exports = function (app) {
       });
     });
   });
+
   ///////////////DELETE NOTE
   app.delete("/api/notes/:id", function (req, res) {
     var IDToDelete = parseInt(req.params.id);
@@ -60,7 +65,6 @@ module.exports = function (app) {
       let newNotesArray = JSON.parse(data);
 
       //look for an object with matching ID property to submitted id
-      //FIXME: there has to be a better way than this loop!
       for (let i = 0; i < newNotesArray.length; i++) {
         if (parseInt(newNotesArray[i].id) === IDToDelete) {
           newNotesArray.splice(i, 1);
@@ -72,10 +76,9 @@ module.exports = function (app) {
         if (err) throw err;
 
         //telling the program that the function is over
-        res.end();
+        res.json({ deletedID: IDToDelete });
       });
     });
-    //TODO: Do I need `res.end();` here as a redundancy in case it fails? or will the throw error take care of that?
   });
 };
 

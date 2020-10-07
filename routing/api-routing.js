@@ -1,26 +1,13 @@
-// const { Console } = require("console"); //FIXME: WTF IS THIS
-// ===============================================================================
-// LOAD DATA
-// We are linking our routes to a series of "data" sources.
-// These data sources hold arrays of information on table-data, waitinglist, etc.
-// ===============================================================================
+// const { Console } = require("console"); //FIXME:
 
 const fs = require("fs");
 const path = require("path");
 // This global variable uniquely identifies each note //TODO: change back to "1" after testing
 let globalID = 2;
-
+//path to local DB (JSON Object array)
 const DBPath = path.join(__dirname, "../db/db.json");
-// ===============================================================================
+
 // ROUTING
-// ===============================================================================
-
-//TODO: Do I want a new DB whenever the server restarts?
-// fs.writeFile(DBPath, "[]", "utf8", (err) => {
-//   if (err) throw err;
-//   res.end();
-// });
-
 module.exports = function (app) {
   // API GET Requests
   // Below code handles when users "visit" a page.
@@ -99,17 +86,6 @@ module.exports = function (app) {
     //TODO: Do I need `res.end();` here as a redundancy in case it fails? or will the throw error take care of that?
   });
 };
-// ---------------------------------------------------------------------------
-// I added this below code so you could clear out the table while working with the functionality.
-// Don"t worry about it!
-
-//   app.post("/api/clear", function (req, res) {
-//     // Empty out the arrays of data
-//     tableData.length = 0;
-//     waitListData.length = 0;
-
-//     res.json({ ok: true });
-//   });
 
 //TODO: Am I going to have a synchronicity issue here?
 // TODO: Should I use promises instead? How would I put this in the route, then use a .then or something?

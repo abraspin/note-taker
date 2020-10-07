@@ -5,16 +5,11 @@ var path = require("path");
 module.exports = function (app) {
   // What to do when user visits a page
   // Server will deliver each html file
-  // ---------------------------------------------------------------------------
 
+  // localhost:3001/notes will return the notes.html file
   app.get("/notes", function (req, res) {
     res.sendFile(path.join(__dirname, "../public/notes.html"));
   });
-  // localhost:8080/tables will return the tables.html file
-
-  //   app.get("/reserve", function (req, res) {
-  //     res.sendFile(path.join(__dirname, "../public/reserve.html"));
-  //   });
 
   // If no matching route is found default to home
   app.get("*", function (req, res) {

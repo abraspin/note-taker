@@ -15,7 +15,6 @@ const PORT = process.env.PORT || 3001;
 // Parse incoming data with middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-//TODO: is this necessary?
 app.use(express.static(__dirname + "/public"));
 
 //Point the server to route files

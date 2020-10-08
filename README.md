@@ -15,7 +15,6 @@ This full-stack Heroku-deployed application uses Node.JS an Express server frame
   
 * [User Story](#User-Story)
 * [Usage](#Usage)
-* [App in Action](#App-in-Action)
 * [Example](#Example)
 * [Contents](#Contents)
 * [Author](#Author)
@@ -37,12 +36,9 @@ This is a graphic interactice website, users enter their note information and su
 
 ---
 
-## App in Action
-![example-video](./images/team-template-app-demo.gif)
-
 
 ## Example
-![Screenshot of deployed app](./images/app-screenshot.png)
+![Screenshot of deployed app](./reference/app-screenshot.png)
 
 
 ---

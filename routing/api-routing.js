@@ -1,25 +1,17 @@
-// const { Console } = require("console"); //FIXME:
 // Dependencies
 const fs = require("fs");
 const path = require("path");
 
-// This global variable uniquely identifies each note
-// let globalID = 1; //FIXME:
-//path to local DB (JSON Object array)
 const DBPath = path.join(__dirname, "../db/db.json");
-
-//create local array variable
 
 // ROUTING
 module.exports = function (app) {
-  //assign variables to local array
   ////////////GET ALL NOTES
   app.get("/api/notes", (req, res) => {
     //read the db.json file containing all saved notes (local path joins path to "DB")
     fs.readFile(DBPath, (err, data) => {
       if (err) throw err;
       //return the parsed information in the notes "DB" and displays on screen
-      // console.log(JSON.parse(data));
       return res.json(JSON.parse(data));
     });
   });
@@ -27,29 +19,21 @@ module.exports = function (app) {
   ////////////////// ADD NOTE
   // When user submits form data to server this will push the object JSON to our "database" file
   app.post("/api/notes", function (req, res) {
-    // console.log("req.body", req.body);
     const newNote = req.body;
-    newNote.id = Math.floor(Math.random() * 100000000);
 
-    ////TODO: math.random * length of array
-    // console.log("globalID", globalID);
-    // console.log("newNote", newNote);
-
+    //note identifier
+    newNote.id = Math.floor(Math.random() * 1000000000000);
     fs.readFile(DBPath, (err, data) => {
       //error handling
       if (err) throw err;
       let notesList = JSON.parse(data);
-      // console.log(JSON.parse(data));
       notesList.push(newNote);
-      // console.log("notesList", notesList);
 
       //Re-write the db.json file with updated notes new array
       fs.writeFile(DBPath, JSON.stringify(notesList), "utf8", (err) => {
-        //1-liner error handling
         if (err) throw err;
 
-        //telling the program that the function is over
-        // res.end();
+        // send new note back with response
         res.json(newNote);
       });
     });
@@ -59,7 +43,6 @@ module.exports = function (app) {
   app.delete("/api/notes/:id", function (req, res) {
     var IDToDelete = parseInt(req.params.id);
 
-    // console.log("Attempting to delete note# " + IDToDelete + "...");
     fs.readFile(DBPath, (err, data) => {
       if (err) throw err;
       let newNotesArray = JSON.parse(data);
@@ -72,7 +55,6 @@ module.exports = function (app) {
       }
 
       fs.writeFile(DBPath, JSON.stringify(newNotesArray), "utf8", (err) => {
-        //1-liner error handling
         if (err) throw err;
 
         //telling the program that the function is over
@@ -81,12 +63,3 @@ module.exports = function (app) {
     });
   });
 };
-
-//TODO: Am I going to have a synchronicity issue here?
-// TODO: Should I use promises instead? How would I put this in the route, then use a .then or something?
-// function readNotesDB() {
-//   fs.readFile(DBPath, (err, data) => {
-//     if (err) throw err;
-//     return res.json(JSON.parse(data));
-//   });
-// }
